@@ -1,4 +1,20 @@
+var ObjectID = require('mongodb').ObjectID;
+
 module.exports = function(application, db) {
+  // GET METHOD
+  application.get("/renters/:id", (req, res) => {
+    const id = req.params.id;
+    const details = {"_id": new ObjectID(id)};
+    db.collection("renters").findOne(details, (err, item) => {
+      if (err) {
+        res.send({"error":"We have an error with GET method"});
+      } else {
+        res.send(item);
+      }
+    });
+  });
+
+  //POST METHOD
   application.post("/renters", (req, res) => {
     //test message console
     //console.log(req.body)
@@ -8,7 +24,7 @@ module.exports = function(application, db) {
     db.collection("renters").insert(renter, (err, result) => {
       //error log
       if (err) {
-        res.send({ "error": "We have an error"});
+        res.send({ "error": "We have an error with POST method"});
       } else {
         res.send(result.ops[0]);
       }
