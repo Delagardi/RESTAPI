@@ -4,7 +4,7 @@ module.exports = function(application, db) {
     console.log(req.body)
     const renter = { text: req.body.body, title: req.body.title };
 
-    db.collection("renters").insert(renter, (err, results) => {
+    db.collection("renters").insert(renter, (err, result) => {
       //error log
       if (err) {
         res.send({ "error": "We have an error"});
@@ -14,6 +14,6 @@ module.exports = function(application, db) {
     });
 
     //test message page
-    res.send("Hello! You are at RENTERS page!")
+    //res.send("Hello! You are at RENTERS page!")
   });
 };
