@@ -1,8 +1,9 @@
 module.exports = function(application, db) {
   application.post("/renters", (req, res) => {
     //test message console
-    console.log(req.body)
-    const renter = { text: req.body.body, title: req.body.title };
+    //console.log(req.body)
+    
+    const renter = { company: req.body.company, contacts: req.body.contacts };
 
     db.collection("renters").insert(renter, (err, result) => {
       //error log
