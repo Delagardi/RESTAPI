@@ -48,7 +48,12 @@ module.exports = function(application, db) {
 
   // POST METHOD
   application.post("/renters", (req, res) => {
-    const renter = {company: req.body.company, contacts: req.body.contacts};
+    const renter = {
+      name: req.body.name, 
+      remember: req.body.remember,
+      expiryDate: req.body.expiryDate,
+      comments: req.body.comments
+    };
 
     db.collection("renters").insert(renter, (err, result) => {
       //error catching
