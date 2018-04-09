@@ -55,13 +55,21 @@ module.exports = function(application, db) {
       comments: req.body.comments
     };
 
-    db.collection("renters").insert(renter, (err, result) => {
-      //error catching
-      if (err) {
-        res.send({"error": "You get an error with POST method"});
-      } else {
-        res.send(result.ops[0]);
-      }
+    renter.save(function(err, renter, affected) {
+      console.log(arguments);
+      console.log(renter.name);
+      console.log(renter.adress);
+      renter.reminder();
+      console.log(renter.comments);
     });
+    
+    // db.collection("renters").insert(renter, (err, result) => {
+    //   //error catching
+    //   if (err) {
+    //     res.send({"error": "You get an error with POST method"});
+    //   } else {
+    //     res.send(result.ops[0]);
+    //   }
+    // });
   });
 };

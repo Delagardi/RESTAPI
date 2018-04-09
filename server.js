@@ -35,23 +35,38 @@ renterSchema.methods.reminder = function() {
 
 const RenterModel = mongoose.model('Renter', renterSchema);
 
-const renter = new RenterModel({
-    name: "Dimm Dima",
-    // adress: {
-    //   city: "Kyiv", 
-    //   street: "Bolsynovska", 
-    //   number: 14
-    // },
-    remember: "Take his money",
-    comments: "Good guy"
-  }
-);
+// const renter = new RenterModel({
+//     name: "Dimm Dima",
+//     // adress: {
+//     //   city: "Kyiv", 
+//     //   street: "Bolsynovska", 
+//     //   number: 14
+//     // },
+//     remember: "Take his money",
+//     comments: "Good guy"
+//   }
+// );
 
-renter.save(function(err, renter, affected) {
-  console.log(arguments);
-  console.log(renter.name);
-  console.log(renter.adress);
-  renter.reminder();
-  console.log(renter.comments);
-});
+require('./app/routes')(application, db);
+application.listen(port, () => {
+  console.log('We are live on ' + port);
+}); 
 
+// renter.save(function(err, renter, affected) {
+//   console.log(arguments);
+//   console.log(renter.name);
+//   console.log(renter.adress);
+//   renter.reminder();
+//   console.log(renter.comments);
+// });
+
+// MongoClient.connect(db.url, (err, database) => {
+//   if (err) return console.log(err)
+                      
+//   // Make sure you add the database name and not the collection name
+//   db = database.db("note-api")
+//   require('./app/routes')(app, db);
+//   app.listen(port, () => {
+//     console.log('We are live on ' + port);
+//   });               
+// })
