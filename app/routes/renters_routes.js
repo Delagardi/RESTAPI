@@ -60,7 +60,7 @@ module.exports = function(application, db) {
       if (err) {
         res.send({"error": "You get an error with POST method"});
       } else {
-        res.send(result.ops[0]);
+          res.send(result.ops[0]);
       }
     });
   });
