@@ -1,72 +1,35 @@
 const express = require("express");
-// const mongoClient = require("mongodb").MongoClient;
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-// const db = require("./config/db");
 const application = express();
-const port = 4321;
 
-application.use(bodyParser.urlencoded({extended: true}));
+application.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect("mongodb://localhost/renters");
+application.use(bodyParser.json());
 
-var db = mongoose.connection;
+const dbConfig = require("./config/dbconfig.js");
+const mongoose = require("mongoose");
 
-db.on('error', console.error.bind(console, 'OUCH! connection error:'));
-db.once('open', function() {
-  console.log("What do you want master?");
+mongoose.Promise = global.Promise;
+
+mongoose.connect(dbConfig.url).then(() => {
+  console.log("Everything ok. Database connection fine");
+}).catch(err => {
+  console.log("I COULD NOT CONNECT TO THE DATABASE");
+  process.exit();
 });
 
-var renterSchema = new mongoose.Schema({
-  name: String,
-  remember: String,
-  // adress: {
-  //   city: String,
-  //   street: String,
-  //   number: Number
-  // },
-  expiryDate: Object,
-  comments: String
+
+
+//Define route
+application.get("/", (req, res) => {
+  res.json({
+    "message":"Welcome to renters application"
+  });
 });
 
-renterSchema.methods.reminder = function() {
-  console.log(this.get("remember"))
-}
+require("./app/routes/renter.routes.js")(application);
 
-const RenterModel = mongoose.model('Renter', renterSchema);
+application.listen(3000, () => {
+  console.log("I am ready");
+});
 
-// const renter = new RenterModel({
-//     name: "Dimm Dima",
-//     // adress: {
-//     //   city: "Kyiv", 
-//     //   street: "Bolsynovska", 
-//     //   number: 14
-//     // },
-//     remember: "Take his money",
-//     comments: "Good guy"
-//   }
-// );
-
-require('./app/routes')(application, db);
-application.listen(port, () => {
-  console.log('We are live on ' + port);
-}); 
-
-// renter.save(function(err, renter, affected) {
-//   console.log(arguments);
-//   console.log(renter.name);
-//   console.log(renter.adress);
-//   renter.reminder();
-//   console.log(renter.comments);
-// });
-
-// MongoClient.connect(db.url, (err, database) => {
-//   if (err) return console.log(err)
-                      
-//   // Make sure you add the database name and not the collection name
-//   db = database.db("note-api")
-//   require('./app/routes')(app, db);
-//   app.listen(port, () => {
-//     console.log('We are live on ' + port);
-//   });               
-// })
