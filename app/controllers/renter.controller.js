@@ -1,4 +1,5 @@
 const Renter = require("../models/renter.model.js");
+const dbOperation = require("../db/db.js");
 
 // Creating and saving renters
 exports.create = (req, res) => {
@@ -19,13 +20,16 @@ exports.create = (req, res) => {
   });
 
   // Saving renter in Database
-  renter.save().then(data => {
-    res.send(data);
-  }).catch(err => {
-    res.status(500).send({
-      message: err.message
-    });
-  });
+
+  dbOperation.saveDB(renter, res);
+
+  // renter.save().then(data => {
+  //   res.send(data);
+  // }).catch(err => {
+  //   res.status(500).send({
+  //     message: err.message
+  //   });
+  // });
 };
 
 //Finding all renters
