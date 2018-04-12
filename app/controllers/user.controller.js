@@ -1,4 +1,4 @@
-const Renter = require("../models/renter.model.js");
+const User = require("../models/user.model.js");
 const dbOperation = require("../db/db.js");
 
 // Creating and saving renters
@@ -7,17 +7,9 @@ exports.create = (req, res) => {
   //Validate request
   if ( !req.body.name ) {
     return res.status(400).send({
-      message: "Renter's name can't be empty. Enter renter's name and repeat, please"
+      message: "User have not the name. Enter renter's name and repeat, please"
     });
   }
-
-  // Creating renter
-  const renter = new Renter({
-    name: req.body.name,
-    adress: req.body.adress,
-    reminders: req.body.reminders,
-    comments: req.body.comments
-  });
 
   // Creating User
   const user = new User({
@@ -26,17 +18,17 @@ exports.create = (req, res) => {
   });
 
   // Saving renter in Database
-  dbOperation.saveDB(renter, user, res);
+  dbOperation.saveDB(user, res);
 };
 
 //Finding all renters
 exports.findAll = (req, res) => {
-  dbOperation.findAllEntrys(Renter, res);
+  dbOperation.findAllEntrys(User, res);
 };
 
 //Finding one renter by ID
 exports.findOne = (req, res) => {  
-  dbOperation.findOneById(Renter, req, res);
+  dbOperation.findOneById(User, req, res);
 };
 
 //Update info about renter
@@ -44,15 +36,15 @@ exports.update = (req, res) => {
   // Validate Request
   if( !req.body.name ) {
     return res.status(400).send({
-      message: "Renter's name can not be empty"
+      message: "User's name can not be empty"
     });
   }
 
   // Find renter and update it with the request body
-  dbOperation.updateById(Renter, req, res);
+  dbOperation.updateById(User, req, res);
 };
 
 //Delete renter by ID
 exports.delete = (req, res) => {
-  dbOperation.deleteById(Renter, req, res);
+  dbOperation.deleteById(User, req, res);
 };

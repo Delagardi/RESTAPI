@@ -1,4 +1,4 @@
-module.exports.saveDB = function (renter, res) {
+module.exports.saveDB = function (renter, user, res) {
   renter.save().then(data => {
     res.send(data);
   }).catch(err => {

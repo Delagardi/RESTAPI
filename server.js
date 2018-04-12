@@ -28,6 +28,7 @@ application.get("/", (req, res) => {
 });
 
 require("./app/routes/renter.routes.js")(application);
+require("./app/routes/user.routes.js")(application);
 
 application.listen(3000, () => {
   console.log("I am ready");
