@@ -12,8 +12,5 @@ const UserSchema = mongoose.Schema({
   }]
 });
 
-//module.exports = mongoose.Schema("Renter", RenterSchema);
-//var Renter = mongoose.model("Renter", RenterSchema);
-//var User = mongoose.model("User", UserSchema);
 module.exports = mongoose.model("User", UserSchema);
 

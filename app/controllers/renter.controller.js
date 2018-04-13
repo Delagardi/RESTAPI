@@ -21,12 +21,6 @@ exports.create = (req, res) => {
     comments: req.body.comments
   });
 
-  // Creating User
-  // const user = new User({
-  //   userName: req.body.username,
-  //   userSurname: req.body.usersurname
-  // });
-
   // Saving renter in Database
   dbOperation.saveDB(renter, res);
 };
@@ -58,3 +52,5 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   dbOperation.deleteById(Renter, req, res);
 };
+
+
