@@ -15,18 +15,20 @@ exports.create = (req, res) => {
   const renter = new Renter({
     name: req.body.name,
     adress: req.body.adress,
-    reminders: req.body.reminders,
+    expiryDate: req.body.expirydate,
+    contacts: req.body.contacts,
+    userName: req.body.username,
     comments: req.body.comments
   });
 
   // Creating User
-  const user = new User({
-    userName: req.body.username,
-    userSurname: req.body.usersurname
-  });
+  // const user = new User({
+  //   userName: req.body.username,
+  //   userSurname: req.body.usersurname
+  // });
 
   // Saving renter in Database
-  dbOperation.saveDB(renter, user, res);
+  dbOperation.saveDB(renter, res);
 };
 
 //Finding all renters

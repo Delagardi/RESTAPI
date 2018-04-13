@@ -17,16 +17,20 @@ const RenterSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  expiryDate: {
-    type: Date,
+  adress: {
+    type: String,
     required: true
   },
-  adress: String,
+  expiryDate: {
+    type: Date,
+    default: Date.now, //now for simpicity
+    required: true
+  },
+  contacts: String,
   userName: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
-  //reminders: String,
   comments: String
 });
 
