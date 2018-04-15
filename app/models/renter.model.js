@@ -26,7 +26,7 @@ const RenterSchema = mongoose.Schema({
 const RenterValidationSchema = Joi.object().keys({
     name: Joi.string().min(2).required(),
     adress: Joi.string().required(),
-    expiryDate: Joi.date().required().default(Date.now, 'time of creation'), //now for simpicity
+    expiryDate: Joi.date().default(Date.now, 'time of creation').required(), //now for simpicity
     contacts: Joi.string(),
     //userName: 
     comments: Joi.string()

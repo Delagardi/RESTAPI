@@ -1,11 +1,11 @@
 const Renter = require("../models/renter.model.js");
 const dbOperation = require("../db/db.js");
 const Joi = require('joi');
+const RenterModel = Renter.createModel();
 
 // Creating and saving renters
 exports.create = (req, res) => {
   // Joi validation:
-  const renterModel = Renter.createModel();
   const result = Joi.validate(req.body, Renter.validationSchema());
 
   if (result.error) {
@@ -17,7 +17,7 @@ exports.create = (req, res) => {
   }
 
   // Creating renter
-  const renter = new Renter.createModel()({
+  const renter = new RenterModel ({
     name: req.body.name,
     adress: req.body.adress,
     expiryDate: req.body.expirydate,
@@ -26,38 +26,41 @@ exports.create = (req, res) => {
     comments: req.body.comments
   });
 
-  console.log("renter SMALL: " + renter);
-
   // Saving renter in Database
   dbOperation.saveDB(renter, res);
 };
 
 //Finding all renters
 exports.findAll = (req, res) => {
-  dbOperation.findAllEntrys(Renter, res);
+  dbOperation.findAllEntrys(RenterModel, res);
 };
 
 //Finding one renter by ID
 exports.findOne = (req, res) => {  
-  dbOperation.findOneById(Renter, req, res);
+  dbOperation.findOneById(RenterModel, req, res);
 };
 
 //Update info about renter
 exports.update = (req, res) => {
-  // Validate Request
-  if( !req.body.name ) {
-    return res.status(400).send({
-      message: "Renter's name can not be empty"
-    });
-  }
+  // Joi validation:
+  const result = Joi.validate(req.body, Renter.validationSchema());
 
+  console.log("RESULT ERROR" + result.error);
+
+  if (result.error) {
+    res.status(400).send({
+      status: 'err', 
+      msg: result.error.details[0].message
+    })
+    return
+  }
   // Find renter and update it with the request body
-  dbOperation.updateById(Renter, req, res);
+  dbOperation.updateById(RenterModel, req, res);
 };
 
 //Delete renter by ID
 exports.delete = (req, res) => {
-  dbOperation.deleteById(Renter, req, res);
+  dbOperation.deleteById(RenterModel, req, res);
 };
 
 

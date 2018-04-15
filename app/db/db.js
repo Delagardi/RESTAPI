@@ -1,4 +1,4 @@
-const Renter = require("../controllers/renter.controller.js");
+const RenterModel = require("../controllers/renter.controller.js");
 const User = require('../controllers/user.controller.js');
 
 //-------- RENTERS ---------
@@ -12,8 +12,8 @@ module.exports.saveDB = function (renter, res) {
   });
 }
 
-module.exports.findAllEntrys = function(Renter, res) {
-  Renter.find().then(renters => {
+module.exports.findAllEntrys = function(RenterModel, res) {
+  RenterModel.find().then(renters => {
     res.send(renters);
   }).catch(err => {
     res.status(500).send({
@@ -22,11 +22,11 @@ module.exports.findAllEntrys = function(Renter, res) {
   });
 }
 
-module.exports.findOneById = function (Renter, req, res) {
-  Renter.findById(req.params.renterId).then(renter => {
+module.exports.findOneById = function (RenterModel, req, res) {
+  RenterModel.findById(req.params.renterId).then(renter => {
     if( !renter ) {
       return res.status(400).send({
-        message: "Renter by this ID:" + req.params.renterId + " is not found"
+        message: "RenterModel by this ID:" + req.params.renterId + " is not found"
       });
     }
     res.send(renter);
@@ -37,13 +37,13 @@ module.exports.findOneById = function (Renter, req, res) {
   });
 }
 
-module.exports.updateById = function (Renter, req, res) {
-  Renter.findByIdAndUpdate(req.params.renterId, {
+module.exports.updateById = function (RenterModel, req, res) {
+  RenterModel.findByIdAndUpdate(req.params.renterId, {
     name: req.body.name,
     adress: req.body.adress,
-    expiryDate: req.body.expirydate,
+    expiryDate: req.body.expiryDate,
     contacts: req.body.contacts,
-    userName: req.body.username,
+    //userName: req.body.username,
     comments: req.body.comments
   }, { new: true })
   .then(renter => {
@@ -60,8 +60,8 @@ module.exports.updateById = function (Renter, req, res) {
   });
 }
 
-module.exports.deleteById = function(Renter, req, res) {
-  Renter.findByIdAndRemove(req.params.renterId)
+module.exports.deleteById = function(RenterModel, req, res) {
+  RenterModel.findByIdAndRemove(req.params.renterId)
   .then(renter => {
     if(!renter) {
       return res.status(404).send({
