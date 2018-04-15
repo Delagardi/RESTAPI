@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-//const Joi = require('joi');
+const Joi = require('joi');
 
 const RenterSchema = mongoose.Schema({
   name: {
@@ -16,11 +16,20 @@ const RenterSchema = mongoose.Schema({
     required: true
   },
   contacts: String,
-  userName: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  },
+  // userName: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "User"
+  // },
   comments: String
+});
+
+const renValidSchema = Joi.object().keys({
+    name: Joi.string().required(),
+    adress: Joi.string().required(),
+    expiryDate: Joi.date().required().default(Date.now, 'time of creation'), //now for simpicity
+    contacts: Joi.string(),
+    //userName: 
+    comments: Joi.string()
 });
 
 module.exports = mongoose.model("Renter", RenterSchema);

@@ -1,14 +1,17 @@
 const Renter = require("../models/renter.model.js");
 const dbOperation = require("../db/db.js");
+const Joi = require('joi');
 
 // Creating and saving renters
 exports.create = (req, res) => {
-  
-  //Validate request
-  if ( !req.body.name ) {
-    return res.status(400).send({
-      message: "Renter's name can't be empty. Enter renter's name and repeat, please"
-    });
+  const result = Joi.validate(req.body, Joi.object().keys(Renter.validationSchema));
+
+  if (result.error) {
+    res.status(400).send({
+      status: 'err', 
+      msg: result.error.details[0].message
+    })
+    return
   }
 
   // Creating renter
@@ -17,7 +20,7 @@ exports.create = (req, res) => {
     adress: req.body.adress,
     expiryDate: req.body.expirydate,
     contacts: req.body.contacts,
-    userName: req.body.username,
+    //userName: req.body.username,
     comments: req.body.comments
   });
 
