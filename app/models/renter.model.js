@@ -4,7 +4,7 @@ const Joi = require('joi');
 const RenterSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true
+    //required: true
   },
   adress: {
     type: String,
@@ -23,8 +23,8 @@ const RenterSchema = mongoose.Schema({
   comments: String
 });
 
-const renValidSchema = Joi.object().keys({
-    name: Joi.string().required(),
+const RenterValidationSchema = Joi.object().keys({
+    name: Joi.string().min(2).required(),
     adress: Joi.string().required(),
     expiryDate: Joi.date().required().default(Date.now, 'time of creation'), //now for simpicity
     contacts: Joi.string(),
@@ -32,6 +32,15 @@ const renValidSchema = Joi.object().keys({
     comments: Joi.string()
 });
 
-module.exports = mongoose.model("Renter", RenterSchema);
+//module.exports = mongoose.model("Renter", RenterSchema);
+
+exports.createModel = function() {
+  return mongoose.model("Renter", RenterSchema);
+}
+
+exports.validationSchema = function() {
+  return RenterValidationSchema;
+}
+
 
 

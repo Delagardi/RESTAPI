@@ -4,7 +4,9 @@ const Joi = require('joi');
 
 // Creating and saving renters
 exports.create = (req, res) => {
-  const result = Joi.validate(req.body, Joi.object().keys(Renter.validationSchema));
+  // Joi validation:
+  const renterModel = Renter.createModel();
+  const result = Joi.validate(req.body, Renter.validationSchema());
 
   if (result.error) {
     res.status(400).send({
@@ -15,7 +17,7 @@ exports.create = (req, res) => {
   }
 
   // Creating renter
-  const renter = new Renter({
+  const renter = new Renter.createModel()({
     name: req.body.name,
     adress: req.body.adress,
     expiryDate: req.body.expirydate,
@@ -23,6 +25,8 @@ exports.create = (req, res) => {
     //userName: req.body.username,
     comments: req.body.comments
   });
+
+  console.log("renter SMALL: " + renter);
 
   // Saving renter in Database
   dbOperation.saveDB(renter, res);
