@@ -43,7 +43,7 @@ module.exports.updateById = function (RenterModel, req, res) {
     adress: req.body.adress,
     expiryDate: req.body.expiryDate,
     contacts: req.body.contacts,
-    //userName: req.body.username,
+    //userName: req.body.userName,
     comments: req.body.comments
   }, { new: true })
   .then(renter => {

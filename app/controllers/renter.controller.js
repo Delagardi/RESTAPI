@@ -20,9 +20,9 @@ exports.create = (req, res) => {
   const renter = new RenterModel ({
     name: req.body.name,
     adress: req.body.adress,
-    expiryDate: req.body.expirydate,
+    expiryDate: req.body.expiryDate,
     contacts: req.body.contacts,
-    //userName: req.body.username,
+    //userName: req.body.userName,
     comments: req.body.comments
   });
 
@@ -45,8 +45,6 @@ exports.update = (req, res) => {
   // Joi validation:
   const result = Joi.validate(req.body, Renter.validationSchema());
 
-  console.log("RESULT ERROR" + result.error);
-
   if (result.error) {
     res.status(400).send({
       status: 'err', 
@@ -54,6 +52,7 @@ exports.update = (req, res) => {
     })
     return
   }
+
   // Find renter and update it with the request body
   dbOperation.updateById(RenterModel, req, res);
 };
