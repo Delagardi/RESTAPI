@@ -22,9 +22,12 @@ exports.create = (req, res) => {
     adress: req.body.adress,
     expiryDate: req.body.expiryDate,
     contacts: req.body.contacts,
-    //userName: req.body.userName,
+    user: req.body.user,
     comments: req.body.comments
   });
+
+  const resultPopulate = RenterModel.find().populate('users');
+  console.log(resultPopulate);
 
   // Saving renter in Database
   dbOperation.saveDB(renter, res);

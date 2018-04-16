@@ -2,7 +2,7 @@ const User = require("../models/user.model.js");
 const dbOperation = require("../db/db.js");
 
 //For manual adding ID field:
-const mongoose = require("mongoose"); 
+//const mongoose = require("mongoose"); 
 
 // Creating and saving renters
 exports.create_user = (req, res) => {
@@ -22,9 +22,9 @@ exports.create_user = (req, res) => {
     userSurname: req.body.usersurname
   });
 
-  module.exports = 
-  //For manual adding ID field:
-  user._id = mongoose.Types.ObjectId('000000000000000000000001');
+  // module.exports = 
+  // //For manual adding ID field:
+  // user._id = mongoose.Types.ObjectId('000000000000000000000001');
 
   // Saving renter in Database
   dbOperation.saveDB_user(user, res);

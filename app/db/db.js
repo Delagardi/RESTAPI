@@ -1,10 +1,16 @@
+// require('../models/renter.model.js');
+// require('../models/user.model.js');
+
 const RenterModel = require("../controllers/renter.controller.js");
 const User = require('../controllers/user.controller.js');
+
 
 //-------- RENTERS ---------
 module.exports.saveDB = function (renter, res) {
   renter.save().then(data => {
     res.send(data);
+    // renter.populate(renter, { path: "user" } );
+    // console.log("RENTER POPULATE" + renter);
   }).catch(err => {
     res.status(500).send({
       message: err.message
@@ -13,7 +19,10 @@ module.exports.saveDB = function (renter, res) {
 }
 
 module.exports.findAllEntrys = function(RenterModel, res) {
-  RenterModel.find().then(renters => {
+  RenterModel.find()
+  .populate("user", "userName") //WTF YOU DOESNT WORKING
+  .exec()
+  .then(renters => {
     res.send(renters);
   }).catch(err => {
     res.status(500).send({
@@ -29,6 +38,7 @@ module.exports.findOneById = function (RenterModel, req, res) {
         message: "RenterModel by this ID:" + req.params.renterId + " is not found"
       });
     }
+
     res.send(renter);
   }).catch(err => {
     return res.status(500).send({

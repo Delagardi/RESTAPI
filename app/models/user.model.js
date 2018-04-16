@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 //("56cb91bdc3464f14678934ca")
 
 const UserSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+  //_id: mongoose.Schema.Types.ObjectId,
   userName: String,
   userSurname: String,
   renters: [{ 
