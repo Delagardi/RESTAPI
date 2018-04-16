@@ -32,7 +32,10 @@ module.exports.findAllEntrys = function(RenterModel, res) {
 }
 
 module.exports.findOneById = function (RenterModel, req, res) {
-  RenterModel.findById(req.params.renterId).then(renter => {
+  RenterModel.findById(req.params.renterId)
+  .populate("user", "userName")
+  .exec()
+    .then(renter => {
     if( !renter ) {
       return res.status(400).send({
         message: "RenterModel by this ID:" + req.params.renterId + " is not found"
