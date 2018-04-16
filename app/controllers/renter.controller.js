@@ -26,9 +26,6 @@ exports.create = (req, res) => {
     comments: req.body.comments
   });
 
-  const resultPopulate = RenterModel.find().populate('users');
-  console.log(resultPopulate);
-
   // Saving renter in Database
   dbOperation.saveDB(renter, res);
 };
