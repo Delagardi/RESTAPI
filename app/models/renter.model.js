@@ -13,32 +13,25 @@ const RenterSchema = mongoose.Schema({
     type: Date,
     default: Date.now, //now for simpicity
   },
-  contacts: String,
+  contacts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Contact" //link to model
+  }],
   user: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User" //link to model
   }],
   comments: String
 });
 
-//const RenterValidationSchema = Joi.object().keys({
 const RenterValidationSchema = Joi.object({
     name: Joi.string().min(2).required(),
     adress: Joi.string().required(),
-    expiryDate: Joi.date().default(Date.now, 'time of creation').required(), //now for simpicity
-    contacts: Joi.string(),
+    expiryDate: Joi.date().default(Date.now, 'time of creation').required(), //.now for simpicity
+    contacts: Joi.objectId(),
     user: Joi.objectId(),
-              // .keys({
-              //   _id: Joi.objectId().required()
-              // }).optional(),
     comments: Joi.string()
 });
-
- // department: Joi.object()
-  //   .keys({
-  //     name: Joi.string(),
-  //     _id: Joi.objectId().required()
-  //   }).optional()
 
 //module.exports = mongoose.model("Renter", RenterSchema);
 

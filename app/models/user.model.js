@@ -8,7 +8,7 @@ const UserSchema = mongoose.Schema({
   userSurname: String,
   renters: [{ 
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Renter"
+    ref: "Renter" //link to model
   }]
 });
 

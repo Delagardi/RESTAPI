@@ -1,16 +1,12 @@
-// require('../models/renter.model.js');
-// require('../models/user.model.js');
-
 const RenterModel = require("../controllers/renter.controller.js");
 const User = require('../controllers/user.controller.js');
+const Contact = require('../controllers/contact.controller.js');
 
 
 //-------- RENTERS ---------
 module.exports.saveDB = function (renter, res) {
   renter.save().then(data => {
     res.send(data);
-    // renter.populate(renter, { path: "user" } );
-    // console.log("RENTER POPULATE" + renter);
   }).catch(err => {
     res.status(500).send({
       message: err.message
@@ -20,7 +16,8 @@ module.exports.saveDB = function (renter, res) {
 
 module.exports.findAllEntrys = function(RenterModel, res) {
   RenterModel.find()
-  .populate("user", "userName") //WTF YOU DOESNT WORKING
+  .populate("user", "userName")         //link to column in collection
+  .populate("contacts", "contactName")  //link to column in collection
   .exec()
   .then(renters => {
     res.send(renters);
@@ -33,7 +30,8 @@ module.exports.findAllEntrys = function(RenterModel, res) {
 
 module.exports.findOneById = function (RenterModel, req, res) {
   RenterModel.findById(req.params.renterId)
-  .populate("user", "userName")
+  .populate("user")               //link to column in collection
+  .populate("contacts")           //link to column in collection
   .exec()
     .then(renter => {
     if( !renter ) {
@@ -56,7 +54,7 @@ module.exports.updateById = function (RenterModel, req, res) {
     adress: req.body.adress,
     expiryDate: req.body.expiryDate,
     contacts: req.body.contacts,
-    //userName: req.body.userName,
+    user: req.body.userid,
     comments: req.body.comments
   }, { new: true })
   .then(renter => {
