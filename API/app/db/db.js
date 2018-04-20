@@ -5,7 +5,8 @@ const Contact = require('../controllers/contact.controller.js');
 
 //-------- RENTERS ---------
 module.exports.saveDB = function (renter, res) {
-  renter.save().then(data => {
+  renter.save()
+  .then(data => {
     res.send(data);
   }).catch(err => {
     res.status(500).send({
