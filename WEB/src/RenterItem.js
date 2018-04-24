@@ -14,9 +14,9 @@ class RenterItem extends Component {
   }
 
   onDelete() {
-    const {onDelete, name} = this.props;
+    const {onDelete, id} = this.props;
 
-    onDelete(name);
+    onDelete(id);
   }
 
   onEdit() {
@@ -26,18 +26,26 @@ class RenterItem extends Component {
   onEditSubmit(event) {
     event.preventDefault();
 
+    // this.props.onEditSubmit(
+    //   this.nameInput.value,
+    //   this.adressInput.value,
+    //   this.phoneInput.value,
+    //   this.props.name //original name, normaly use ID
+    // );
     this.props.onEditSubmit(
-      this.nameInput.value,
-      this.adressInput.value,
-      this.phoneInput.value,
-      this.props.name //original name, normaly use ID
+      this.titleInput.value,
+      this.bodyInput.value,
+      this.idInput.value,
+      this.userIdInput.value,
+      //this.props.name //original name, normaly use ID
     );
 
     this.setState({isEdit: false});
   }
 
   render() {
-    const {name, adress, phone} = this.props;
+    //const {name, adress, phone} = this.props;
+    const {title, body, id, userId} = this.props;
 
     return (
       <div>
@@ -45,19 +53,33 @@ class RenterItem extends Component {
           this.state.isEdit
           ? (
             <form onSubmit={this.onEditSubmit}>
-              <input placeholder="Name" ref={nameInput => this.nameInput = nameInput} defaultValue={name} />
-              <input placeholder="Adress" ref={adressInput => this.adressInput = adressInput} defaultValue={adress}/>
-              <input placeholder="Phone" ref={phoneInput => this.phoneInput = phoneInput} defaultValue={phone}/>
+              <input placeholder="title" ref={titleInput => this.titleInput = titleInput} defaultValue={title} />
+              <input placeholder="body" ref={bodyInput => this.bodyInput = bodyInput} defaultValue={body}/>
+              <input placeholder="userId" ref={userIdInput => this.userIdInput = userIdInput} defaultValue={userId}/>
+              <input placeholder="id" ref={idInput => this.idInput = idInput} defaultValue={id}/>
               <button>Save</button>
             </form>
           )
           : (
+            // <div>
+            //   <span>{name}</span>
+            //   {` | `}
+            //   <span>{adress}</span>
+            //   {` | `}
+            //   <span>{phone}</span>
+            //   {` | `}
+            //   <button onClick={this.onEdit}>Edit renter</button>
+            //   {` | `}
+            //   <button onClick={this.onDelete}>Delete renter</button>
+            // </div>
             <div>
-              <span>{name}</span>
+              <span>{title}</span>
               {` | `}
-              <span>{adress}</span>
+              <span>{body}</span>
               {` | `}
-              <span>{phone}</span>
+              <span>{id}</span>
+              {` | `}
+              <span>{userId}</span>
               {` | `}
               <button onClick={this.onEdit}>Edit renter</button>
               {` | `}
