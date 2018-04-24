@@ -5,6 +5,7 @@ class RenterItem extends Component {
     super(props);
 
     this.state = {
+      contacts: [],
       isEdit: false
     };
 
@@ -14,9 +15,9 @@ class RenterItem extends Component {
   }
 
   onDelete() {
-    const {onDelete, id} = this.props;
+    const {onDelete, _id} = this.props;
 
-    onDelete(id);
+    onDelete(_id);
   }
 
   onEdit() {
@@ -26,18 +27,14 @@ class RenterItem extends Component {
   onEditSubmit(event) {
     event.preventDefault();
 
-    // this.props.onEditSubmit(
-    //   this.nameInput.value,
-    //   this.adressInput.value,
-    //   this.phoneInput.value,
-    //   this.props.name //original name, normaly use ID
-    // );
     this.props.onEditSubmit(
-      this.titleInput.value,
-      this.bodyInput.value,
-      this.idInput.value,
-      this.userIdInput.value,
-      //this.props.name //original name, normaly use ID
+      // this.contactsInput.value,
+      // this.userInput.value,
+      this.expiryDateInput.value,
+      this._idInput.value,
+      this.nameInput.value,
+      this.adressInput.value,
+      this.commentsInput.value,
     );
 
     this.setState({isEdit: false});
@@ -45,7 +42,17 @@ class RenterItem extends Component {
 
   render() {
     //const {name, adress, phone} = this.props;
-    const {title, body, id, userId} = this.props;
+    const {
+      //contacts,
+      // user,
+      expiryDate,
+      _id,
+      name,
+      adress,
+      comments
+    } = this.props;
+
+    //console.log("props.contacts._id --" + this.props._id);
 
     return (
       <div>
@@ -53,36 +60,48 @@ class RenterItem extends Component {
           this.state.isEdit
           ? (
             <form onSubmit={this.onEditSubmit}>
-              <input placeholder="title" ref={titleInput => this.titleInput = titleInput} defaultValue={title} />
-              <input placeholder="body" ref={bodyInput => this.bodyInput = bodyInput} defaultValue={body}/>
-              <input placeholder="userId" ref={userIdInput => this.userIdInput = userIdInput} defaultValue={userId}/>
-              <input placeholder="id" ref={idInput => this.idInput = idInput} defaultValue={id}/>
+              
+              <input placeholder="expiryDate" ref={expiryDateInput => this.expiryDateInput = expiryDateInput} defaultValue={expiryDate}/>
+              <input placeholder="_id" ref={_idInput => this._idInput = _idInput} defaultValue={_id}/>
+              <input placeholder="name" ref={nameInput => this.nameInput = nameInput} defaultValue={name}/>
+              <input placeholder="adress" ref={adressInput => this.adressInput = adressInput} defaultValue={adress}/>
+              <input placeholder="comments" ref={commentsInput => this.commentsInput = commentsInput} defaultValue={comments}/>
               <button>Save</button>
             </form>
           )
           : (
-            // <div>
-            //   <span>{name}</span>
-            //   {` | `}
-            //   <span>{adress}</span>
-            //   {` | `}
-            //   <span>{phone}</span>
-            //   {` | `}
-            //   <button onClick={this.onEdit}>Edit renter</button>
-            //   {` | `}
-            //   <button onClick={this.onDelete}>Delete renter</button>
-            // </div>
             <div>
-              <span>{title}</span>
-              {` | `}
-              <span>{body}</span>
-              {` | `}
-              <span>{id}</span>
-              {` | `}
-              <span>{userId}</span>
-              {` | `}
+              <div>Contacts info: 
+                {this.props.contacts.map(contactItem => {
+                    return (
+                      <div key={contactItem._id}>
+                        <span>ID contact: {contactItem._id}</span>
+                        <h4>Contact Name: {contactItem.contactName}</h4>
+                      </div>
+                    );
+                  })
+                }
+              </div>
+              <div>User info: 
+                {this.props.user.map(userItem => {
+                    return (
+                      <div key={userItem._id}>
+                        <span>ID user: {userItem._id}</span>
+                        <h4>User Name: {userItem.userName}</h4>
+                      </div>
+                    );
+                  })
+                }
+              </div>
+              <span>Expiry Date: {expiryDate}</span>
+              <div>ID of renter: {_id}</div>
+              <h3>{name}</h3>
+              <div>
+                <div>Adress: {adress}</div>
+                <small>Comments {comments} |</small>
+              </div>
+              <hr />
               <button onClick={this.onEdit}>Edit renter</button>
-              {` | `}
               <button onClick={this.onDelete}>Delete renter</button>
             </div>
           )
@@ -92,5 +111,4 @@ class RenterItem extends Component {
     );
   }
 }
-
 export default RenterItem;

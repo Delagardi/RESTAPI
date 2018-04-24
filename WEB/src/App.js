@@ -5,34 +5,11 @@ import './App.css';
 
 import Axios from 'axios';
 
-
-// const renters = [
-//   {
-//     name: "Kyiv Renters",
-//     adress: "Vasylkivska, 15",
-//     phone: 445554433
-//   },
-//   {
-//     name: "Renter Company",
-//     adress: "Antonovycha, 10",
-//     phone: 442223322 
-//   },
-//   {
-//     name: "World Wide Renters",
-//     adress: "Lva Tolsogo, 20",
-//     phone: 983332211 
-//   }
-// ];
-
-//initiate DB
-//localStorage.setItem("rentersItem", JSON.stringify(renters))
-
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      //renters: JSON.parse(localStorage.getItem("rentersItem"))
       renters: []
     };
 
@@ -48,7 +25,7 @@ class App extends Component {
 
     // Нет смысла ждать пока компонент замаунтиться и потом
     // грузить данные. Это можно/нужно делать гараздо раньше
-    Axios.get("https://jsonplaceholder.typicode.com/posts")
+    Axios.get("http://localhost:4321/renters")
     .then(res => {
       const copyRenters = res.data.slice();
 
@@ -60,104 +37,50 @@ class App extends Component {
     })
   }
 
-  // componentWillMount() {
-  //   // Нет смысла ждать пока компонент замаунтиться и потом
-  //   // грузить данные. Это можно/нужно делать гараздо раньше
-  //   axios.get(`https://jsonplaceholder.typicode.com/posts`)
-  //   .then(res => {
-  //     // Здесь ты перезаписываешь стейт полность, так делать не стоит 
-  //     // так как там могут быть другие нужные данну
-  //     const copyPosts = res.data.slice();
-
-  //     this.setState({
-  //     // Здесь ты передаешь обьект по сылке, а нужно его копировать,
-  //     // иначе это может вызвать трудн отлавливаемые баги
-  //       posts: copyPosts
-  //     });
-  //   })
-  // }
-
   getRenters() {
     return this.state.renters;
   }
 
-  // onAdd(name, adress, phone) {
-  //   const renters = this.getRenters();
-
-  //   renters.push({
-  //     // name,
-  //     // adress,
-  //     // phone
-  //     title,
-  //     body,
-  //     phone,
-  //     id,
-  //     userId
-  //   });
-
-  //   this.setState({renters});
-  // }
-  onAdd(title, body, id, userId) {
+  onAdd(expiryDate, name, _id, adress, comments) {
     const renters = this.getRenters();
 
+    console.log("RENTERS: " + renters);
+
     renters.push({
-      // name,
-      // adress,
-      // phone
-      title,
-      body,
-      id,
-      userId
+      //contacts,
+      //user,
+      expiryDate,
+      _id,
+      name,
+      adress,
+      comments
     });
 
     this.setState({renters});
   }
 
-  // onDelete(name) {
-  //   const renters = this.getRenters();
-
-  //   const filteredRenters = renters.filter(renter => {
-  //     return renter.name !== name;
-  //   });
-
-  //   this.setState({renters: filteredRenters});
-  // }
-
-  onDelete(id) {
+  onDelete(_id) {
     const renters = this.getRenters();
 
     const filteredRenters = renters.filter(renter => {
-      return renter.id !== id;
+      return renter._id !== _id;
     });
 
     this.setState({renters: filteredRenters});
   }
 
-  // onEditSubmit(name, adress, phone, originalName) {
-  //   //console.log(name, adress, phone);
-  //   let renters = this.getRenters();
-
-  //   renters = renters.map(renter => {
-  //     if (renter.name === originalName) {
-  //       renter.name = name;
-  //       renter.adress = adress;
-  //       renter.phone = phone;
-  //     }
-
-  //     return renter;
-  //   });
-    
-  //   this.setState({renters});
-  // }
-  onEditSubmit(title, body, userId, id) {
+  onEditSubmit(_id, expiryDate, name, adress, comments) {
     //console.log(name, adress, phone);
     let renters = this.getRenters();
 
     renters = renters.map(renter => {
-      if (renter.id === id) {
-        renter.title = title;
-        renter.body = body;
-        renter.userId = userId;
+      if (renter._id === _id) {
+        //renter.contacts = contacts;
+        //renter.user = user;
+        renter.expiryDate = expiryDate;
+        renter.name = name;
+        renter.adress = adress;
+        renter.comments = comments;
       }
 
       return renter;
@@ -177,19 +100,15 @@ class App extends Component {
           {
             this.state.renters.map(renter => {
               return (
-                // <RenterItem
-                //   key = {renter.name}
-                //   name = {renter.name}
-                //   adress = {renter.adress}
-                //   phone = {renter.phone}
-                //   onDelete = {this.onDelete}
-                //   onEditSubmit = {this.onEditSubmit}
-                // />
                 <RenterItem
-                  key = {renter.id}
-                  title = {renter.title}
-                  body = {renter.body}
-                  userId = {renter.userId}
+                  key = {renter._id}
+                  contacts = {renter.contacts}
+                  expiryDate = {renter.expiryDate}
+                  name = {renter.name}
+                  _id = {renter._id}
+                  adress = {renter.adress}
+                  comments = {renter.comments}
+                  user = {renter.user}
                   onDelete = {this.onDelete}
                   onEditSubmit = {this.onEditSubmit}
                 />
@@ -201,5 +120,15 @@ class App extends Component {
     );
   }
 }
-
+// <RenterItem
+//                   key = {renter._id}
+//                   contacts = {renter.contacts}
+//                   user = {renter.user}
+//                   expiryDate = {renter.expiryDate}
+//                   name = {renter.name}
+//                   adress = {renter.adress}
+//                   comments = {renter.comments}
+//                   onDelete = {this.onDelete}
+//                   onEditSubmit = {this.onEditSubmit}
+//                 />
 export default App;
