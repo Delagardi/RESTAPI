@@ -14,7 +14,7 @@ class AddRenter extends Component {
     Axios.post("http://localhost:4321/renters/",
       {
         headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded"
         }
       }).then(function(response) {
         console.log("RESPONSE DATA (adding): " + response.data);

@@ -10,7 +10,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      renters: []
+      renters: [],
+      isLoading: false,
     };
 
     this.onAdd = this.onAdd.bind(this);
@@ -91,36 +92,17 @@ class App extends Component {
 
   showRenterById(renterID) {
     const renterURI = "http://localhost:4321/renters/" + renterID;
-    let rentersAll = this.getRenters();
+    //let rentersAll = this.getRenters();
 
-    Axios.get(renterURI)
-    .then(function (response) {
-      console.log("RESPONSE: " + response.data.name);
-      // rentersAll.filter(renterOne => {
-      //   console.log("renter._id: " + renterOne._id);
-      //   if ( renterOne._id === renterID ) {
-      //     return   
-      //   }
-        
-      // });
-    }).catch(function (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
+    this.setState({isLoading: true});
+
+    Axios.get(renterURI).then(({data}) => {
+      this.setState({currentRentor: {...data}, currentRentorId: data._id, isLoading: false});
     });
+  }
+
+  back = () => {
+    this.setState({currentRentorId: 0});
   }
 
   render() {
@@ -131,37 +113,53 @@ class App extends Component {
           <AddRenter
             onAdd = {this.onAdd}
           />
-          {
-            this.state.renters.map(renter => {
-              return (
-                <div>
-                <div>
-                  <h3>Data exampl for insert in Add fields</h3>
-                  <p>name: ADD ME!</p>
-                  <p>adress: Kyiv, Ukraine</p>
-                  <p>contacts: 010000000000000000000000</p>
-                  <p>comments: some comments</p>
-                  <p>user: 000000000000000000000002</p>
-                  <p>expiryDate: 2018-04-15</p>
-                  <hr/>
-                  <hr/>
-                </div>
-                <RenterItem
-                  key = {renter._id}
-                  contacts = {renter.contacts}
-                  expiryDate = {renter.expiryDate}
-                  name = {renter.name}
-                  _id = {renter._id}
-                  adress = {renter.adress}
-                  comments = {renter.comments}
-                  user = {renter.user}
+
+          {this.state.isLoading 
+            ? <h2>Loading...</h2> 
+            : <div>
+              {this.state.currentRentorId
+              ? <div>
+                <button onClick={this.back}>Back to list</button>
+                <br />
+                <RenterItem key = {this.state.currentRentor._id}
+                  contacts = {this.state.currentRentor.contacts}
+                  expiryDate = {this.state.currentRentor.expiryDate}
+                  name = {this.state.currentRentor.name}
+                  _id = {this.state.currentRentor._id}
+                  adress = {this.state.currentRentor.adress}
+                  comments = {this.state.currentRentor.comments}
+                  user = {this.state.currentRentor.user}
                   onDelete = {this.onDelete}
                   onEditSubmit = {this.onEditSubmit}
                   showRenterById = {this.showRenterById}
                 />
+              </div> 
+              : <div>
+                <table class="pure-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                  {this.state.renters.map((r, i) => (
+                  <tr>
+                    <td>{i+1}</td>
+                    <td>{r.name}</td>
+                    <td>
+                      <button className="pure-button pure-button-primary" onClick={this.showRenterById.bind(this, r._id)}>Edit</button>
+                    </td>
+                  </tr>
+                  ))}
+                </tbody>
+                </table>
+                <div>Number of renters: {this.state.renters.length}</div>
                 </div>
-              );
-            })
+              }
+            </div>
           }
         </div>
       </div>
