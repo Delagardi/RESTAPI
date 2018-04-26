@@ -16,22 +16,15 @@ class App extends Component {
     this.onAdd = this.onAdd.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onEditSubmit = this.onEditSubmit.bind(this);
+    this.showRenterById = this.showRenterById.bind(this);
   }
 
   componentWillMount() {
-    //const renters = this.getRenters();
-
-    //this.setState({renters});
-
-    // Нет смысла ждать пока компонент замаунтиться и потом
-    // грузить данные. Это можно/нужно делать гараздо раньше
     Axios.get("http://localhost:4321/renters")
     .then(res => {
       const copyRenters = res.data.slice();
 
       this.setState({
-      // Здесь ты передаешь обьект по сылке, а нужно его копировать,
-      // иначе это может вызвать трудн отлавливаемые баги
         renters: copyRenters
       });
     })
@@ -60,11 +53,20 @@ class App extends Component {
   }
 
   onDelete(_id) {
+    console.log("Delete _id: " + _id);
     const renters = this.getRenters();
-
+    
     const filteredRenters = renters.filter(renter => {
+      console.log("renter._id: " + renter._id);
       return renter._id !== _id;
     });
+
+    const renterUrlDelete = "http://localhost:4321/renters/" + _id;
+
+    Axios.delete(renterUrlDelete)
+    .then(res => {
+      console.log(res);
+    })
 
     this.setState({renters: filteredRenters});
   }
@@ -89,6 +91,56 @@ class App extends Component {
     this.setState({renters});
   }
 
+  showRenterById(renterID) {
+    const renterURI = "http://localhost:4321/renters/" + renterID;
+    Axios.get(renterURI)
+    .then(function (response) {
+      // response.data.map(resData => {
+      
+      console.log(response.data.name);
+  
+      console.log(response.data._id);
+      // const rentersAll = this.getRenters();
+  
+      // rentersAll.filter(renterOne => {
+      //   console.log("renter._id: " + renterOne._id);
+      //   return renterOne._id === renterID;
+      // });
+
+      //this.setState({renters: filteredRenters});
+        // return (
+        //   <RenterItem
+        //     key = {response.data._id}
+        //     contacts = {response.data.contacts}
+        //     expiryDate = {response.data.expiryDate}
+        //     name = {response.data.name}
+        //     _id = {response.data._id}
+        //     adress = {response.data.adress}
+        //     comments = {response.data.comments}
+        //     user = {response.data.user}
+        //   />
+        // );
+      //})
+    }).catch(function (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -111,6 +163,7 @@ class App extends Component {
                   user = {renter.user}
                   onDelete = {this.onDelete}
                   onEditSubmit = {this.onEditSubmit}
+                  showRenterById = {this.showRenterById}
                 />
               );
             })
@@ -120,15 +173,4 @@ class App extends Component {
     );
   }
 }
-// <RenterItem
-//                   key = {renter._id}
-//                   contacts = {renter.contacts}
-//                   user = {renter.user}
-//                   expiryDate = {renter.expiryDate}
-//                   name = {renter.name}
-//                   adress = {renter.adress}
-//                   comments = {renter.comments}
-//                   onDelete = {this.onDelete}
-//                   onEditSubmit = {this.onEditSubmit}
-//                 />
 export default App;

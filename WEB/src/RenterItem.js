@@ -12,6 +12,13 @@ class RenterItem extends Component {
     this.onDelete = this.onDelete.bind(this);
     this.onEdit = this.onEdit.bind(this);
     this.onEditSubmit = this.onEditSubmit.bind(this);
+    this.showRenterById = this.showRenterById.bind(this);
+  }
+
+  showRenterById() {
+    const {showRenterById, _id} = this.props;
+
+    showRenterById(_id);
   }
 
   onDelete() {
@@ -43,16 +50,14 @@ class RenterItem extends Component {
   render() {
     //const {name, adress, phone} = this.props;
     const {
-      //contacts,
-      // user,
+      contacts,
+      user,
       expiryDate,
       _id,
       name,
       adress,
       comments
     } = this.props;
-
-    //console.log("props.contacts._id --" + this.props._id);
 
     return (
       <div>
@@ -94,7 +99,7 @@ class RenterItem extends Component {
                 }
               </div>
               <span>Expiry Date: {expiryDate}</span>
-              <div>ID of renter: {_id}</div>
+              <div onClick={this.showRenterById}>ID of renter: {_id}</div>
               <h3>{name}</h3>
               <div>
                 <div>Adress: {adress}</div>
