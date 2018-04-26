@@ -53,11 +53,9 @@ class App extends Component {
   }
 
   onDelete(_id) {
-    console.log("Delete _id: " + _id);
     const renters = this.getRenters();
     
     const filteredRenters = renters.filter(renter => {
-      console.log("renter._id: " + renter._id);
       return renter._id !== _id;
     });
 
@@ -93,34 +91,18 @@ class App extends Component {
 
   showRenterById(renterID) {
     const renterURI = "http://localhost:4321/renters/" + renterID;
+    let rentersAll = this.getRenters();
+
     Axios.get(renterURI)
     .then(function (response) {
-      // response.data.map(resData => {
-      
-      console.log(response.data.name);
-  
-      console.log(response.data._id);
-      // const rentersAll = this.getRenters();
-  
+      console.log("RESPONSE: " + response.data.name);
       // rentersAll.filter(renterOne => {
       //   console.log("renter._id: " + renterOne._id);
-      //   return renterOne._id === renterID;
+      //   if ( renterOne._id === renterID ) {
+      //     return   
+      //   }
+        
       // });
-
-      //this.setState({renters: filteredRenters});
-        // return (
-        //   <RenterItem
-        //     key = {response.data._id}
-        //     contacts = {response.data.contacts}
-        //     expiryDate = {response.data.expiryDate}
-        //     name = {response.data.name}
-        //     _id = {response.data._id}
-        //     adress = {response.data.adress}
-        //     comments = {response.data.comments}
-        //     user = {response.data.user}
-        //   />
-        // );
-      //})
     }).catch(function (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
