@@ -34,14 +34,14 @@ class App extends Component {
     return this.state.renters;
   }
 
-  onAdd(expiryDate, name, _id, adress, comments) {
+  onAdd(expiryDate, name, _id, adress, comments, contacts, user) {
     const renters = this.getRenters();
 
     console.log("RENTERS: " + renters);
 
     renters.push({
-      //contacts,
-      //user,
+      contacts,
+      user,
       expiryDate,
       _id,
       name,
@@ -134,6 +134,18 @@ class App extends Component {
           {
             this.state.renters.map(renter => {
               return (
+                <div>
+                <div>
+                  <h3>Data exampl for insert in Add fields</h3>
+                  <p>name: ADD ME!</p>
+                  <p>adress: Kyiv, Ukraine</p>
+                  <p>contacts: 010000000000000000000000</p>
+                  <p>comments: some comments</p>
+                  <p>user: 000000000000000000000002</p>
+                  <p>expiryDate: 2018-04-15</p>
+                  <hr/>
+                  <hr/>
+                </div>
                 <RenterItem
                   key = {renter._id}
                   contacts = {renter.contacts}
@@ -147,6 +159,7 @@ class App extends Component {
                   onEditSubmit = {this.onEditSubmit}
                   showRenterById = {this.showRenterById}
                 />
+                </div>
               );
             })
           }

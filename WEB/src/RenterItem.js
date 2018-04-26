@@ -35,8 +35,8 @@ class RenterItem extends Component {
     event.preventDefault();
 
     this.props.onEditSubmit(
-      // this.contactsInput.value,
-      // this.userInput.value,
+      this.contactsInput.value,
+      this.userInput.value,
       this.expiryDateInput.value,
       this._idInput.value,
       this.nameInput.value,
